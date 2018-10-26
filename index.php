@@ -30,6 +30,9 @@ class DebugView
         $html[] = '<ul class="nav nav-pills nav-stacked">';
         $last = count($_SESSION[Debugger::$sessionKey]) - 1;
         foreach ($_SESSION[Debugger::$sessionKey] as $i => $request) {
+            if (!isset($request['status'])) {
+                continue;
+            }
             $active = ($i == $last ? 'active' : '');
             $html[] = '<li class="' . $active . '"><a href="#debug-request-' . $i . '" data-toggle="tab">';
             $html[] = static::getRequestCaption($request);
