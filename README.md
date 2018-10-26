@@ -1,1 +1,1 @@
-# debugger
+# MindaPHP Debugger
