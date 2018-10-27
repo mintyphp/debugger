@@ -2,7 +2,7 @@
 // Change directory to project root
 chdir(__DIR__ . '/../..');
 // Use default autoload implementation
-require 'vendor/mindaphp/core/src/Loader.php';
+require 'vendor/mintyphp/core/src/Loader.php';
 // Load the config parameters
 require 'config/config.php';
 // Debugview class
@@ -401,7 +401,7 @@ Session::start();
 <html>
   <head>
     <base href="<?php echo Router::getBaseUrl(); ?>">
-    <title>MindaPHP Debugger</title>
+    <title>MintyPHP Debugger</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="debugger/img/favicon.ico">
@@ -421,8 +421,8 @@ Session::start();
     <div class="row">
       <div class="col-md-4">
         <h3>
-          <img src="debugger/img/mindaphp_logo_22x24.png" alt="MindaPHP logo" style="float:left; margin-right:10px;">
-          MindaPHP Debugger
+          <img src="debugger/img/mintyphp_logo_22x24.png" alt="MintyPHP logo" style="float:left; margin-right:10px;">
+          MintyPHP Debugger
         </h3>
       </div>
     </div>
