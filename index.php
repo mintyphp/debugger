@@ -421,7 +421,7 @@ Session::start();
     <div class="row">
       <div class="col-md-4">
         <h3>
-          <img src="debugger/img/mintyphp_logo_22x24.png" alt="MintyPHP logo" style="float:left; margin-right:10px;">
+          <img src="debugger/img/minty_square.png" alt="MintyPHP logo" style="float:left; margin-right:10px;">
           MintyPHP Debugger
         </h3>
       </div>
