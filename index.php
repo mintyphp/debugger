@@ -78,7 +78,7 @@ class DebugView
         $html = array();
         $html[] = '<div class="tab-pane active" id="debug-request-' . $requestId . '-routing">';
         if ($request['router']['method'] == 'GET' && count($request['router']['parameters']['get'])) {
-            $html[] = '<div class="alert alert-warning"><strong>Warning:</strong> GET parameters should not be used</div>';
+            $html[] = '<div class="alert alert-info"><strong>Info:</strong> It is better to use path parameters than GET parameters</div>';
         }
         if ($request['router']['method'] == 'POST' && !$request['router']['csrfOk']) {
             $html[] = '<div class="alert alert-danger"><strong>Error:</strong> CSRF token validation failed</div>';
