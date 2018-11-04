@@ -331,7 +331,6 @@ class DebugView
             $tables['timing'] = array_map(function ($v) {return sprintf('%.2f ms', $v * 1000);}, $call['timing']);
 
             $tables['options'] = $call['options'];
-            $tables['headers'] = $call['headers'];
             foreach ($tables as $table => $fields) {
                 $t = 0;
                 $tc = count($fields);
