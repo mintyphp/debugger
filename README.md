@@ -1,1 +1,1 @@
-# MindaPHP Debugger
+# MintyPHP Debugger
