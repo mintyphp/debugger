@@ -65,7 +65,7 @@ class DebugView
                 $key = '[' . $key . ']';
             }
             if (is_array($value)) {
-                $result = $result+static::flattenParameters($value, $prefix . $key);
+                $result = $result + static::flattenParameters($value, $prefix . $key);
             } else {
                 $result[$prefix . $key] = $value;
             }
@@ -136,6 +136,10 @@ class DebugView
             $html[] = htmlspecialchars('Aborted: Exception, "die()" or "exit" encountered');
         } elseif ($request['type'] == 'ok') {
             $html[] = htmlspecialchars('Rendered page: ' . $request['router']['url']);
+        } elseif ($request['type'] == 'json') {
+            $html[] = htmlspecialchars('Rendered JSON: ' . $request['router']['url']);
+        } elseif ($request['type'] == 'download') {
+            $html[] = htmlspecialchars('Rendered download: ' . $request['router']['url']);
         } elseif ($request['type'] == 'redirect') {
             $html[] = htmlspecialchars('Redirected to: ' . $request['redirect']);
         }
@@ -328,7 +332,9 @@ class DebugView
             $tables['details']['data_received'] = $call['result']['data'] ? '<a href="data:text/plain;base64,' . base64_encode($call['result']['data']) . '" target="_blank">View (' . strlen($call['result']['data']) . ' bytes)</a>' : '-';
             $tables['details']['headers_sent'] = $call['headers'] ? '<a href="data:text/plain;base64,' . base64_encode(var_export($call['headers'], true)) . '" target="_blank">' . count($call['headers']) . ' headers</a>' : '-';
             $tables['details']['headers_received'] = $call['result']['headers'] ? '<a href="data:text/plain;base64,' . base64_encode(var_export($call['result']['headers'], true)) . '" target="_blank">' . count($call['result']['headers']) . ' headers</a>' : '-';
-            $tables['timing'] = array_map(function ($v) {return sprintf('%.2f ms', $v * 1000);}, $call['timing']);
+            $tables['timing'] = array_map(function ($v) {
+                return sprintf('%.2f ms', $v * 1000);
+            }, $call['timing']);
 
             $tables['options'] = $call['options'];
             foreach ($tables as $table => $fields) {
@@ -398,7 +404,8 @@ Session::start();
 ?>
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <base href="<?php echo Router::getBaseUrl(); ?>">
     <title>MintyPHP Debugger</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -413,59 +420,61 @@ Session::start();
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="debugger/js/bootstrap.min.js"></script>
 
-  </head>
-  <body>
-  <div class="container">
+</head>
 
-    <div class="row">
-      <div class="col-md-4">
-        <h3>
-          <img src="debugger/img/minty_square.png" alt="MintyPHP logo" style="height: 24px; float:left; margin-right:10px;">
-          MintyPHP Debugger
-        </h3>
-      </div>
-    </div>
+<body>
+    <div class="container">
 
-    <div class="row">
-      <div class="col-md-4">
-        <?php echo DebugView::getRequestList(); ?>
-      </div>
-      <div class="col-md-8">
-        <div class="tab-content">
-          <?php $last = count($_SESSION[Debugger::$sessionKey]) - 1;?>
-          <?php foreach ($_SESSION[Debugger::$sessionKey] as $i => $request): ?>
-          <div class="tab-pane <?php echo $i == $last ? 'active' : ''; ?>" id="debug-request-<?php echo $i ?>">
-            <?php echo DebugView::getTabList($i); ?>
-            <div class="tab-content">
-              <?php echo DebugView::getRoutingTabPane($i, $request); ?>
-              <?php echo DebugView::getExecutionTabPane($i, $request); ?>
-              <?php echo DebugView::getSessionTabPane($i, $request); ?>
-              <?php echo DebugView::getQueriesTabPane($i, $request); ?>
-              <?php echo DebugView::getApiCallsTabPane($i, $request); ?>
-              <?php echo DebugView::getCacheTabPane($i, $request); ?>
-              <?php echo DebugView::getLoggingTabPane($i, $request); ?>
+        <div class="row">
+            <div class="col-md-4">
+                <h3>
+                    <img src="debugger/img/minty_square.png" alt="MintyPHP logo" style="height: 24px; float:left; margin-right:10px;">
+                    MintyPHP Debugger
+                </h3>
             </div>
-          </div>
-          <?php endforeach;?>
         </div>
-        <script>
-        $(function () {
-          var classes=[];
-          $('#debug-request-<?php echo $last; ?> a[data-toggle="tab"]').each(function (e) {
-            classes.push($(this).attr('class'));
-          });
-          $(classes).each(function (i,c) {
-        	$('a[data-toggle="tab"].'+c).on('shown.bs.tab', function () {
-              $('a[data-toggle="tab"].'+c).each(function () {
-            	$(this).tab('show');
-      	      });
-            });
-          });
-        });
-        </script>
-      </div>
-    </div>
 
-  </div>
+        <div class="row">
+            <div class="col-md-4">
+                <?php echo DebugView::getRequestList(); ?>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content">
+                    <?php $last = count($_SESSION[Debugger::$sessionKey]) - 1; ?>
+                    <?php foreach ($_SESSION[Debugger::$sessionKey] as $i => $request) : ?>
+                        <div class="tab-pane <?php echo $i == $last ? 'active' : ''; ?>" id="debug-request-<?php echo $i ?>">
+                            <?php echo DebugView::getTabList($i); ?>
+                            <div class="tab-content">
+                                <?php echo DebugView::getRoutingTabPane($i, $request); ?>
+                                <?php echo DebugView::getExecutionTabPane($i, $request); ?>
+                                <?php echo DebugView::getSessionTabPane($i, $request); ?>
+                                <?php echo DebugView::getQueriesTabPane($i, $request); ?>
+                                <?php echo DebugView::getApiCallsTabPane($i, $request); ?>
+                                <?php echo DebugView::getCacheTabPane($i, $request); ?>
+                                <?php echo DebugView::getLoggingTabPane($i, $request); ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <script>
+                    $(function() {
+                        var classes = [];
+                        $('#debug-request-<?php echo $last; ?> a[data-toggle="tab"]').each(function(e) {
+                            classes.push($(this).attr('class'));
+                        });
+                        $(classes).each(function(i, c) {
+                            $('a[data-toggle="tab"].' + c).on('shown.bs.tab', function() {
+                                $('a[data-toggle="tab"].' + c).each(function() {
+                                    $(this).tab('show');
+                                });
+                            });
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+
+    </div>
 </body>
+
 </html>
