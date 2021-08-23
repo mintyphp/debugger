@@ -423,7 +423,6 @@ Session::start();
 </head>
 
 <body>
-    <iframe style="width:100%;height:100%;position:absolute;top:0;border:0;display:none;" name="myiframe"></iframe>
     <div class="container">
 
         <div class="row">
