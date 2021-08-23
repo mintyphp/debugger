@@ -326,12 +326,12 @@ class DebugView
             $tables = array();
             $tables['details'] = array();
             $tables['details']['method'] = $call['method'];
-            $tables['details']['url'] = '<a href="' . $url . '" target="_blank">Visit</a>';
+            $tables['details']['url'] = '<a href="' . $url . '">Visit</a>';
             $tables['details']['status'] = $call['status'];
-            $tables['details']['data_sent'] = $call['data'] ? '<a href="data:text/plain;base64,' . base64_encode($call['data']) . '" target="_blank">' . strlen($call['data']) . ' bytes</a>' : '-';
-            $tables['details']['data_received'] = $call['result']['data'] ? '<a href="data:text/plain;base64,' . base64_encode($call['result']['data']) . '" target="_blank">View (' . strlen($call['result']['data']) . ' bytes)</a>' : '-';
-            $tables['details']['headers_sent'] = $call['headers'] ? '<a href="data:text/plain;base64,' . base64_encode(var_export($call['headers'], true)) . '" target="_blank">' . count($call['headers']) . ' headers</a>' : '-';
-            $tables['details']['headers_received'] = $call['result']['headers'] ? '<a href="data:text/plain;base64,' . base64_encode(var_export($call['result']['headers'], true)) . '" target="_blank">' . count($call['result']['headers']) . ' headers</a>' : '-';
+            $tables['details']['data_sent'] = $call['data'] ? '<a href="data:text/json;charset=UTF-8;base64,' . base64_encode($call['data']) . '">' . strlen($call['data']) . ' bytes</a>' : '-';
+            $tables['details']['data_received'] = $call['result']['data'] ? '<a href="data:text/json;charset=UTF-8;base64,' . base64_encode($call['result']['data']) . '">View (' . strlen($call['result']['data']) . ' bytes)</a>' : '-';
+            $tables['details']['headers_sent'] = $call['headers'] ? '<a href="data:text/json;charset=UTF-8;base64,' . base64_encode(var_export($call['headers'], true)) . '">' . count($call['headers']) . ' headers</a>' : '-';
+            $tables['details']['headers_received'] = $call['result']['headers'] ? '<a href="data:text/json;charset=UTF-8;base64,' . base64_encode(var_export($call['result']['headers'], true)) . '">' . count($call['result']['headers']) . ' headers</a>' : '-';
             $tables['timing'] = array_map(function ($v) {
                 return sprintf('%.2f ms', $v * 1000);
             }, $call['timing']);
@@ -423,6 +423,7 @@ Session::start();
 </head>
 
 <body>
+    <iframe style="width:100%;height:100%;position:absolute;top:0;border:0;display:none;" name="myiframe"></iframe>
     <div class="container">
 
         <div class="row">
