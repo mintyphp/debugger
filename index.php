@@ -1,8 +1,13 @@
 <?php
+
+use MintyPHP\Debugger;
+use MintyPHP\Session;
+use MintyPHP\Router;
+
 // Change directory to project root
 chdir(__DIR__ . '/../..');
 // Use default autoload implementation
-require 'vendor/mintyphp/core/src/Loader.php';
+require 'vendor/autoload.php';
 // Load the config parameters
 require 'config/config.php';
 // Debugview class
